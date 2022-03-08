@@ -1,18 +1,22 @@
-export default class Dish {
-	constructor() {
-		this.name = "";
-		this.ingredients = [];
-	}
+import SceneObject from "../SceneObject";
 
-	setName(name) {
-		this.name = name;
-	}
+export default class Dish extends SceneObject {
+    constructor(scene, asset_string, x, y) {
+        super(scene, asset_string, x, y);
 
-	getName() {
-		return this.name;
-	}
+        this.name = "";
+        this.ingredients = [];
+    }
 
-	addIngredient(ingredient) {
-		this.ingredients.push(ingredient);
-	}
+    setName(name) {
+        this.name = name;
+    }
+
+    getName() {
+        return this.name;
+    }
+
+    addIngredient(ingredient) {
+        this.ingredients.push(ingredient);
+    }
 }

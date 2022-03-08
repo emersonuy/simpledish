@@ -1,103 +1,106 @@
 import COOKING_STYLE from "../defines/CookingStyles";
+import SceneObject from "../SceneObject";
 
-export default class AbstractIngredient {
-	constructor() {
-		this.name = "";
-		this.need_to_chop = false;
-		this.need_to_cook = false;
-		this.cooking_style = COOKING_STYLE.BOIL;
+export default class AbstractIngredient extends SceneObject {
+    constructor(scene, asset_string, x, y) {
+        super(scene, asset_string, x, y);
 
-		this.chopped_percentage = 0;
-		this.cooked_percentage = 0;
+        this.name = "";
+        this.need_to_chop = false;
+        this.need_to_cook = false;
+        this.cooking_style = COOKING_STYLE.BOIL;
 
-		this.chopping_time = 1000;
-		this.cooking_time = 1500;
+        this.chopped_percentage = 0;
+        this.cooked_percentage = 0;
 
-		this.CHOPPING_RATE = 100;
-		this.COOKING_RATE = 100;
-	}
+        this.chopping_time = 2000;
+        this.cooking_time = 5000;
 
-	setChoppingTime(time_ms) {
-		this.chopping_time = time_ms;
-	}
+        this.CHOPPING_RATE = 100;
+        this.COOKING_RATE = 100;
+    }
 
-	setCookingTime(time_ms) {
-		this.cooking_time(time_ms);
-	}
+    setChoppingTime(time_ms) {
+        this.chopping_time = time_ms;
+    }
 
-	startChopping() {
-		if (this.chopped_percentage >= 1) {
-			return;
-		}
+    setCookingTime(time_ms) {
+        this.cooking_time(time_ms);
+    }
 
-		let context = this;
-		this.chopping_timer = setInterval(function () {
-			let progress = context.CHOPPING_RATE / context.chopping_time;
+    startChopping() {
+        if (this.chopped_percentage >= 1) {
+            return;
+        }
 
-			context.chopped_percentage += progress;
+        let context = this;
+        this.chopping_timer = setInterval(function () {
+            let progress = context.CHOPPING_RATE / context.chopping_time;
 
-			if (context.chopped_percentage >= 1) {
-				context.chopped_percentage = 1;
-				clearInterval(context.chopping_timer);
-			}
-		}, context.CHOPPING_RATE);
-	}
+            context.chopped_percentage += progress;
 
-	startCooking() {
-		if (this.cooked_percentage >= 1) {
-			return;
-		}
+            if (context.chopped_percentage >= 1) {
+                context.chopped_percentage = 1;
+                clearInterval(context.chopping_timer);
+            }
+        }, context.CHOPPING_RATE);
+    }
 
-		let context = this;
-		this.cooking_timer = setInterval(function () {
-			let progress = context.COOKING_RATE / context.cooking_time;
+    startCooking() {
+        if (this.cooked_percentage >= 1) {
+            return;
+        }
 
-			context.cooked_percentage += progress;
+        let context = this;
+        this.cooking_timer = setInterval(function () {
+            let progress = context.COOKING_RATE / context.cooking_time;
 
-			if (context.cooked_percentage >= 1) {
-				context.cooked_percentage = 1;
-				clearInterval(context.cooking_timer);
-			}
-		}, context.COOKING_RATE);
-	}
+            context.cooked_percentage += progress;
 
-	setName(name) {
-		this.name = name;
-	}
+            if (context.cooked_percentage >= 1) {
+                context.cooked_percentage = 1;
+                clearInterval(context.cooking_timer);
+            }
+        }, context.COOKING_RATE);
+    }
 
-	setNeedToChop(b) {
-		this.need_to_chop = b;
-	}
+    setName(name) {
+        this.name = name;
+    }
 
-	setNeedToCook(b) {
-		this.need_to_cook = b;
-	}
+    setNeedToChop(b) {
+        this.need_to_chop = b;
+    }
 
-	setCookingStyle(cooking_style) {
-		this.cooking_style = cooking_style;
-	}
+    setNeedToCook(b) {
+        this.need_to_cook = b;
+    }
 
-	getName() {
-		return this.name;
-	}
+    setCookingStyle(cooking_style) {
+        this.cooking_style = cooking_style;
+    }
 
-	needsToBeChopped() {
-		return this.need_to_chop;
-	}
+    getName() {
+        return this.name;
+    }
 
-	needsToBeCooked() {
-		return this.need_to_cook;
-	}
+    needsToBeChopped() {
+        return this.need_to_chop;
+    }
 
-	getCookingStyle() {
-		return this.cooking_style;
-	}
+    needsToBeCooked() {
+        return this.need_to_cook;
+    }
 
-	isChopped() {
-		return this.need_to_chop ? this.chopped_percentage === 1 : true;
-	}
+    getCookingStyle() {
+        return this.cooking_style;
+    }
 
-	isCooked() {
-		return this.need_to_cook ? this.cooked_percentage === 1 : true;
-	}
+    isChopped() {
+        return this.need_to_chop ? this.chopped_percentage === 1 : true;
+    }
+
+    isCooked() {
+        return this.need_to_cook ? this.cooked_percentage === 1 : true;
+    }
 }

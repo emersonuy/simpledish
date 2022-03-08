@@ -1,10 +1,9 @@
 import AbstractIngredient from "./AbstractIngredient";
-import COOKING_STYLE from "../defines/CookingStyles";
 
 export default class Fish extends AbstractIngredient {
-	constructor() {
-		super();
+    constructor(scene, asset_string, x, y) {
+        super(scene, asset_string, x, y);
 
-		this.setName("Fish");
-	}
+        this.setName("Fish");
+    }
 }

@@ -7,6 +7,7 @@ export default class AbstractStage {
 		this.elapsed_time = 0;
 		this.CLOCK_UPDATE_RATE = 1000;
 		this.ORDER_ID = 1;
+
 	}
 
 	addDish(dish, time_limit_ms) {
@@ -15,8 +16,6 @@ export default class AbstractStage {
 			dish: dish,
 			time_limit_ms: time_limit_ms,
 		});
-
-		console.log(this.possible_orders);
 	}
 
 	setStageTimeLimit(time_limit_ms) {
@@ -45,15 +44,11 @@ export default class AbstractStage {
 	addOrder() {
 		let random_index = parseInt((Math.random() * 100) % this.possible_orders.length);
 
-		console.log(random_index);
-
 		let random_order = { ...this.possible_orders[random_index] };
 		console.log(random_order);
 		random_order.id = this.ORDER_ID++;
 
 		this.orders[random_order.id] = { ...random_order };
-
-		console.log(this.orders);
 	}
 
 	removeOrder(id) {

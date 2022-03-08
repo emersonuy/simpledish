@@ -1,22 +1,27 @@
-export default class ChoppingBoard {
-	constructor() {
-		this.ingredient = null;
-	}
+import ASSET_STRING from "../defines/AssetStrings";
+import SceneObject from "../SceneObject";
 
-	setIngredient(ingredient) {
-		if (ingredient.isChopped()) return;
-		if (ingredient.needsToBeChopped() === false) return;
+export default class ChoppingBoard extends SceneObject {
+    constructor(scene, x, y) {
+        super(scene, ASSET_STRING.CHOPPING_BOARD, x, y);
 
-		this.ingredient = ingredient;
-		ingredient.startChopping();
-	}
+        this.ingredient = null;
+    }
 
-	clearIngredient() {
-		if (this.ingredient === null) return;
+    setIngredient(ingredient) {
+        if (ingredient.isChopped()) return;
+        if (ingredient.needsToBeChopped() === false) return;
 
-		this.ingredient.stopChopping();
-		this.ingredient = null;
-	}
+        this.ingredient = ingredient;
+        ingredient.startChopping();
+    }
 
-	update() {}
+    clearIngredient() {
+        if (this.ingredient === null) return;
+
+        this.ingredient.stopChopping();
+        this.ingredient = null;
+    }
+
+    update() {}
 }

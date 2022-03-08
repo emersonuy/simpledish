@@ -1,9 +1,9 @@
 import AbstractIngredient from "./AbstractIngredient";
 
 export default class Nori extends AbstractIngredient {
-	constructor() {
-		super();
+    constructor(scene, asset_string, x, y) {
+        super(scene, asset_string, x, y);
 
-		this.setName("Nori");
-	}
+        this.setName("Nori");
+    }
 }

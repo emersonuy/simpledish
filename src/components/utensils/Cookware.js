@@ -1,34 +1,37 @@
 import COOKING_STYLE from "../defines/CookingStyles";
+import SceneObject from "../SceneObject";
 
-export default class Cookware {
-	constructor() {
-		this.ingredient = null;
-		this.cooking_style = COOKING_STYLE.BOIL;
-	}
+export default class Cookware extends SceneObject {
+    constructor(scene, asset_string, x, y) {
+        super(scene, asset_string, x, y);
 
-	setCookingStyle(style) {
-		this.cooking_style = style;
-	}
+        this.ingredient = null;
+        this.cooking_style = COOKING_STYLE.BOIL;
+    }
 
-	canCookIngredient(ingredient) {
-		return ingredient.getCookingStyle() === this.cooking_style;
-	}
+    setCookingStyle(style) {
+        this.cooking_style = style;
+    }
 
-	setIngredient(ingredient) {
-		if (ingredient.needsToBeChopped() && !ingredient.isChopped()) return;
-		if (ingredient.isCooked()) return;
-		if (ingredient.needsToBeCooked() === false) return;
+    canCookIngredient(ingredient) {
+        return ingredient.getCookingStyle() === this.cooking_style;
+    }
 
-		this.ingredient = ingredient;
-		ingredient.startCooking();
-	}
+    setIngredient(ingredient) {
+        if (ingredient.needsToBeChopped() && !ingredient.isChopped()) return;
+        if (ingredient.isCooked()) return;
+        if (ingredient.needsToBeCooked() === false) return;
 
-	clearIngredient() {
-		if (this.ingredient === null) return;
+        this.ingredient = ingredient;
+        ingredient.startCooking();
+    }
 
-		this.ingredient.stopCooking();
-		this.ingredient = null;
-	}
+    clearIngredient() {
+        if (this.ingredient === null) return;
 
-	update() {}
+        this.ingredient.stopCooking();
+        this.ingredient = null;
+    }
+
+    update() {}
 }
