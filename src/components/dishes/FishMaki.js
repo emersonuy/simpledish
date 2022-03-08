@@ -8,6 +8,8 @@ export default class FishMaki extends Dish {
 	constructor() {
 		super();
 
+		this.setName("Fish Maki");
+
 		let fish = new Fish();
 		let nori = new Nori();
 		let rice = new Rice();
