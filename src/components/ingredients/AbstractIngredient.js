@@ -81,11 +81,11 @@ export default class AbstractIngredient {
 		return this.name;
 	}
 
-	getNeedToChop() {
+	needsToBeChopped() {
 		return this.need_to_chop;
 	}
 
-	getNeedToCook() {
+	needsToBeCooked() {
 		return this.need_to_cook;
 	}
 

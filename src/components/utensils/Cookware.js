@@ -15,9 +15,9 @@ export default class Cookware {
 	}
 
 	setIngredient(ingredient) {
-		if (ingredient.getNeedToChop() && !ingredient.isChopped()) return;
+		if (ingredient.needsToBeChopped() && !ingredient.isChopped()) return;
 		if (ingredient.isCooked()) return;
-		if (ingredient.getNeedToCook() === false) return;
+		if (ingredient.needsToBeCooked() === false) return;
 
 		this.ingredient = ingredient;
 		ingredient.startCooking();

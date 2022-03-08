@@ -5,7 +5,7 @@ export default class ChoppingBoard {
 
 	setIngredient(ingredient) {
 		if (ingredient.isChopped()) return;
-		if (ingredient.getNeedToChop() === false) return;
+		if (ingredient.needsToBeChopped() === false) return;
 
 		this.ingredient = ingredient;
 		ingredient.startChopping();
