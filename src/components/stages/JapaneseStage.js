@@ -2,7 +2,7 @@ import AbstractStage from "./AbstractStage";
 import FishMaki from "../dishes/FishMaki";
 import Sashimi from "../dishes/Sashimi";
 import BoilingPot from "../utensils/BoilingPot";
-import TimeHelper from "../../../helpers/TimeHelpers";
+import TimeHelper from "../../helpers/TimeHelpers";
 import Fish from "../ingredients/Fish";
 import Rice from "../ingredients/Rice";
 import Nori from "../ingredients/Nori";

@@ -6,6 +6,7 @@ export default class Rice extends AbstractIngredient {
 		super(ASSET_STRING.RAW_RICE);
 
 		this.setCookedAssetString(ASSET_STRING.STEAMED_RICE);
+		this.setNeedToCook(true);
 
 		this.setName("Rice");
 	}

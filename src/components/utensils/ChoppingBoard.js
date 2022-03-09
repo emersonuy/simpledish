@@ -2,40 +2,60 @@ import ASSET_STRING from "../defines/AssetStrings";
 import SceneObject from "../SceneObject";
 
 export default class ChoppingBoard extends SceneObject {
-	constructor() {
-		super(ASSET_STRING.CHOPPING_BOARD);
+    constructor() {
+        super(ASSET_STRING.CHOPPING_BOARD);
 
-		this.ingredient = null;
-	}
+        this.ingredient = null;
+    }
 
-	chop() {
-		if (this.ingredient === null) return false;
-		if (this.ingredient.isChopped()) return false;
-		if (this.ingredient.needsToBeChopped() === false) return false;
+    chop() {
+        if (this.ingredient === null) return false;
+        if (this.ingredient.isChopped()) return false;
+        if (this.ingredient.needsToBeChopped() === false) return false;
 
-		this.ingredient.startChopping();
+        this.ingredient.startChopping();
 
-		return true;
-	}
+        return true;
+    }
 
-	setIngredient(ingredient) {
-		if (this.ingredient !== null) return false;
-		if (ingredient.isChopped()) return false;
-		if (ingredient.needsToBeChopped() === false) return false;
+    empty() {
+        return this.ingredient === null;
+    }
 
-		this.ingredient = ingredient;
+    setIngredient(ingredient) {
+        if (!this.empty()) return false;
+        if (ingredient.needsToBeChopped() === false) return false;
 
-		return true;
-	}
+        this.ingredient = ingredient;
 
-	clearIngredient() {
-		if (this.ingredient === null) return null;
+        return true;
+    }
 
-		let ingredient = this.ingredient;
-		this.ingredient = null;
+    ingredientChopped() {
+        if (this.ingredient === null) return false;
 
-		return ingredient;
-	}
+        return this.ingredient.isChopped();
+    }
 
-	validate() {}
+    getChoppedIngredient() {
+        if (this.empty()) return null;
+        if (!this.ingredient.isChopped()) return null;
+
+        let ingredient = this.ingredient;
+
+        this.ingredient = null;
+
+        return ingredient;
+    }
+
+    clearIngredient() {
+        if (this.ingredient === null) return null;
+
+        let ingredient = this.ingredient;
+        this.ingredient = null;
+
+        return ingredient;
+    }
+
+    validate() {}
 }
