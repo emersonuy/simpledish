@@ -3,9 +3,9 @@ import COOKING_STYLE from "../defines/CookingStyles";
 import Cookware from "./Cookware";
 
 export default class DeepFryer extends Cookware {
-    constructor(scene, x, y) {
-        super(scene, ASSET_STRING.DEEP_FRYER, x, y);
+	constructor() {
+		super(ASSET_STRING.DEEP_FRYER);
 
-        this.setCookingStyle(COOKING_STYLE.DEEP_FRY);
-    }
+		this.setCookingStyle(COOKING_STYLE.DEEP_FRY);
+	}
 }

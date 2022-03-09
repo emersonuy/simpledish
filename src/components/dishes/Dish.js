@@ -1,22 +1,22 @@
 import SceneObject from "../SceneObject";
 
 export default class Dish extends SceneObject {
-    constructor(scene, asset_string, x, y) {
-        super(scene, asset_string, x, y);
+	constructor(asset_string) {
+		super(asset_string);
 
-        this.name = "";
-        this.ingredients = [];
-    }
+		this.name = "";
+		this.ingredients = [];
+	}
 
-    setName(name) {
-        this.name = name;
-    }
+	setName(name) {
+		this.name = name;
+	}
 
-    getName() {
-        return this.name;
-    }
+	getName() {
+		return this.name;
+	}
 
-    addIngredient(ingredient) {
-        this.ingredients.push(ingredient);
-    }
+	addIngredient(ingredient) {
+		this.ingredients.push(ingredient);
+	}
 }

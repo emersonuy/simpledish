@@ -3,9 +3,9 @@ import COOKING_STYLE from "../defines/CookingStyles";
 import Cookware from "./Cookware";
 
 export default class Steamer extends Cookware {
-    constructor(scene, x, y) {
-        super(scene, ASSET_STRING.STEAMER, x, y);
+	constructor() {
+		super(ASSET_STRING.STEAMER);
 
-        this.setCookingStyle(COOKING_STYLE.STEAM);
-    }
+		this.setCookingStyle(COOKING_STYLE.STEAM);
+	}
 }

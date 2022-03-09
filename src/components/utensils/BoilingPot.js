@@ -3,9 +3,9 @@ import Cookware from "./Cookware";
 import ASSET_STRING from "../defines/AssetStrings";
 
 export default class BoilingPot extends Cookware {
-    constructor(scene, x, y) {
-        super(scene, ASSET_STRING.BOILING_POT, x, y);
+	constructor() {
+		super(ASSET_STRING.BOILING_POT);
 
-        this.setCookingStyle(COOKING_STYLE.BOIL);
-    }
+		this.setCookingStyle(COOKING_STYLE.BOIL);
+	}
 }
