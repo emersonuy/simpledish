@@ -19,4 +19,6 @@ export default class Dish extends SceneObject {
 	addIngredient(ingredient) {
 		this.ingredients.push(ingredient);
 	}
+
+	addToScene(scene) {}
 }
