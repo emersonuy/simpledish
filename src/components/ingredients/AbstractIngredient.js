@@ -108,6 +108,8 @@ export default class AbstractIngredient extends SceneObject {
 	}
 
 	isChopped() {
+		console.log(this.chopped_percentage);
+
 		return this.need_to_chop ? this.chopped_percentage === 1 : true;
 	}
 

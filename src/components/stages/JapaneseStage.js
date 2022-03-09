@@ -3,9 +3,9 @@ import FishMaki from "../dishes/FishMaki";
 import Sashimi from "../dishes/Sashimi";
 import BoilingPot from "../utensils/BoilingPot";
 import TimeHelper from "../../../helpers/TimeHelpers";
-import Crate from "../Crate";
-import ChoppingBoard from "../utensils/ChoppingBoard";
-import Plate from "../Plate";
+import Fish from "../ingredients/Fish";
+import Rice from "../ingredients/Rice";
+import Nori from "../ingredients/Nori";
 
 export default class JapaneseStage extends AbstractStage {
 	constructor() {
@@ -19,38 +19,12 @@ export default class JapaneseStage extends AbstractStage {
 		this.addCookware(new BoilingPot(), 2);
 		this.addCookware(new BoilingPot(), 3);
 
-		this.crates = [
-			new Crate(),
-			new Crate(),
-			new Crate(),
-			new Crate(),
-			new Crate(),
-			new Crate(),
-		];
-
-		this.crate_positions = [
-			{ x: 0, y: 520 },
-			{ x: 0, y: 790 },
-			{ x: 0, y: 1060 },
-			{ x: 810, y: 520 },
-			{ x: 810, y: 790 },
-			{ x: 810, y: 1060 },
-		];
-
-		this.chopping_boards = [new ChoppingBoard(), new ChoppingBoard(), new ChoppingBoard()];
-
-		this.chopping_board_positions = [
-			{ x: 405, y: 520 },
-			{ x: 405, y: 790 },
-			{ x: 405, y: 1060 },
-		];
-
-		this.plates = [new Plate(), new Plate(), new Plate()];
-		this.plate_positions = [
-			{ x: 0, y: 1350 },
-			{ x: 405, y: 1350 },
-			{ x: 810, y: 1350 },
-		];
+		this.addCrate(new Fish(), 0);
+		this.addCrate(new Rice(), 1);
+		this.addCrate(new Nori(), 2);
+		this.addCrate(new Fish(), 3);
+		this.addCrate(new Rice(), 4);
+		this.addCrate(new Nori(), 5);
 
 		this.setStageTimeLimit(TimeHelper.minToMsec(5));
 	}
@@ -69,27 +43,23 @@ export default class JapaneseStage extends AbstractStage {
 		});
 
 		this.crates.forEach((crate, index) => {
+			if (crate === null) return;
+
 			crate.addToScene(scene);
-			crate
-				.getSceneObject()
-				.setPosition(context.crate_positions[index].x, context.crate_positions[index].y);
+			crate.setPosition(context.crate_positions[index].x, context.crate_positions[index].y);
 		});
 
 		this.chopping_boards.forEach((chopping_board, index) => {
 			chopping_board.addToScene(scene);
-			chopping_board
-				.getSceneObject()
-				.setPosition(
-					context.chopping_board_positions[index].x,
-					context.chopping_board_positions[index].y
-				);
+			chopping_board.setPosition(
+				context.chopping_board_positions[index].x,
+				context.chopping_board_positions[index].y
+			);
 		});
 
 		this.plates.forEach((plate, index) => {
 			plate.addToScene(scene);
-			plate
-				.getSceneObject()
-				.setPosition(context.plate_positions[index].x, context.plate_positions[index].y);
+			plate.setPosition(context.plate_positions[index].x, context.plate_positions[index].y);
 		});
 	}
 }

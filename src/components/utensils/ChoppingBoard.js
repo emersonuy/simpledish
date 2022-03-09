@@ -8,20 +8,34 @@ export default class ChoppingBoard extends SceneObject {
 		this.ingredient = null;
 	}
 
+	chop() {
+		if (this.ingredient === null) return false;
+		if (this.ingredient.isChopped()) return false;
+		if (this.ingredient.needsToBeChopped() === false) return false;
+
+		this.ingredient.startChopping();
+
+		return true;
+	}
+
 	setIngredient(ingredient) {
-		if (ingredient.isChopped()) return;
-		if (ingredient.needsToBeChopped() === false) return;
+		if (this.ingredient !== null) return false;
+		if (ingredient.isChopped()) return false;
+		if (ingredient.needsToBeChopped() === false) return false;
 
 		this.ingredient = ingredient;
-		ingredient.startChopping();
+
+		return true;
 	}
 
 	clearIngredient() {
-		if (this.ingredient === null) return;
+		if (this.ingredient === null) return null;
 
-		this.ingredient.stopChopping();
+		let ingredient = this.ingredient;
 		this.ingredient = null;
+
+		return ingredient;
 	}
 
-	update() {}
+	validate() {}
 }
