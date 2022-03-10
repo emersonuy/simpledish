@@ -1,5 +1,6 @@
 import ASSET_STRING from "../defines/AssetStrings";
 import SceneObject from "../SceneObject";
+import ProgressBar from "../ui/ProgressBar";
 
 export default class ChoppingBoard extends SceneObject {
     constructor() {
@@ -14,6 +15,17 @@ export default class ChoppingBoard extends SceneObject {
         if (this.ingredient.needsToBeChopped() === false) return false;
 
         this.ingredient.startChopping();
+        this.getProgressBar().show();
+        let context = this;
+        this.ingredient.on("chop_progress", (progress) => {
+            let progress_bar = context.getProgressBar();
+
+            progress_bar.setProgress(progress);
+        });
+
+        this.ingredient.on("chop_complete", () => {
+            context.getProgressBar().hide();
+        });
 
         return true;
     }

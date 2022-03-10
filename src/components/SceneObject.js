@@ -1,80 +1,94 @@
 import ScaleHelper from "../helpers/ScaleHelper";
+import ProgressBar from "./ui/ProgressBar";
 
 export default class SceneObject {
-	constructor(asset_string) {
-		this.asset_string = asset_string;
-		this.scene_object = null;
-		this.is_highlighted = false;
-	}
+    constructor(asset_string) {
+        this.asset_string = asset_string;
+        this.scene_object = null;
+        this.is_highlighted = false;
+    }
 
-	setAssetString(asset_string) {
-		this.asset_string = asset_string;
-	}
+    setAssetString(asset_string) {
+        this.asset_string = asset_string;
+    }
 
-	on(event, callback) {
-		this.scene_object.setInteractive();
+    on(event, callback) {
+        this.scene_object.setInteractive();
 
-		let context = this;
-		this.scene_object.on(event, (e) => {
-			callback(context);
-		});
-	}
+        let context = this;
+        this.scene_object.on(event, (e) => {
+            callback(context);
+        });
+    }
 
-	addToScene(scene, x, y) {
-		this.safeDelete();
+    addToScene(scene, x, y) {
+        this.safeDelete();
 
-		this.scene_object = scene.add.image(x, y, this.asset_string);
-		this.scene_object.setOrigin(0);
-		this.scene_object.setFrame(this.frame_index);
-	}
+        this.scene_object = scene.add.image(x, y, this.asset_string);
+        this.scene_object.setOrigin(0);
+        this.scene_object.setFrame(this.frame_index);
+    }
 
-	safeDelete() {
-		if (this.scene_object !== null) {
-			this.scene_object.destroy();
-		}
+    addProgressBar(scene) {
+        let position = this.getPosition();
+        let dimension = this.getDimension();
 
-		this.scene_object = null;
-	}
+        position.y += dimension.h - dimension.w / 5;
+        this.progress_bar = new ProgressBar(scene, position.x, position.y, dimension.w);
+        this.progress_bar.hide();
+    }
 
-	getSceneObject() {
-		return this.scene_object;
-	}
+    getProgressBar() {
+        return this.progress_bar;
+    }
 
-	getPosition() {
-		return { x: this.scene_object.x, y: this.scene_object.y };
-	}
+    safeDelete() {
+        if (this.scene_object !== null) {
+            this.scene_object.destroy();
+        }
 
-	getDimension() {
-		return {
-			w: this.scene_object.width * this.scene_object.scaleX,
-			h: this.scene_object.height * this.scene_object.scaleY,
-		};
-	}
+        this.scene_object = null;
+    }
 
-	setPosition(x, y) {
-		this.scene_object.setPosition(x, y);
-	}
+    getSceneObject() {
+        return this.scene_object;
+    }
 
-	setHighlighted() {
-		this.is_highlighted = true;
-	}
+    getPosition() {
+        return { x: this.scene_object.x, y: this.scene_object.y };
+    }
 
-	isHighlighted() {
-		return this.is_highlighted;
-	}
+    getDimension() {
+        return {
+            w: this.scene_object.width * this.scene_object.scaleX,
+            h: this.scene_object.height * this.scene_object.scaleY,
+        };
+    }
 
-	renderOnTop(scene, object, scale) {
-		let x = this.scene_object.x;
-		let y = this.scene_object.y;
-		let dimension = this.getDimension();
-		let scaled_dimension = { w: dimension.w * scale, h: dimension.h * scale };
+    setPosition(x, y) {
+        this.scene_object.setPosition(x, y);
+    }
 
-		object.addToScene(scene, x, y);
-		ScaleHelper.scaleObj(object.getSceneObject(), scaled_dimension.w, scaled_dimension.h);
+    setHighlighted() {
+        this.is_highlighted = true;
+    }
 
-		object.setPosition(
-			x + (dimension.w / 2 - scaled_dimension.w / 2),
-			y + (dimension.h / 2 - scaled_dimension.h / 2)
-		);
-	}
+    isHighlighted() {
+        return this.is_highlighted;
+    }
+
+    renderOnTop(scene, object, scale) {
+        let x = this.scene_object.x;
+        let y = this.scene_object.y;
+        let dimension = this.getDimension();
+        let scaled_dimension = { w: dimension.w * scale, h: dimension.h * scale };
+
+        object.addToScene(scene, x, y);
+        ScaleHelper.scaleObj(object.getSceneObject(), scaled_dimension.w, scaled_dimension.h);
+
+        object.setPosition(
+            x + (dimension.w / 2 - scaled_dimension.w / 2),
+            y + (dimension.h / 2 - scaled_dimension.h / 2)
+        );
+    }
 }

@@ -2,36 +2,67 @@ import COOKING_STYLE from "../defines/CookingStyles";
 import SceneObject from "../SceneObject";
 
 export default class Cookware extends SceneObject {
-	constructor(asset_string) {
-		super(asset_string);
+    constructor(asset_string) {
+        super(asset_string);
 
-		this.ingredient = null;
-		this.cooking_style = COOKING_STYLE.BOIL;
-	}
+        this.ingredient = null;
+        this.cooking_style = COOKING_STYLE.BOIL;
+    }
 
-	setCookingStyle(style) {
-		this.cooking_style = style;
-	}
+    cook() {
+        this.ingredient.startCooking();
 
-	canCookIngredient(ingredient) {
-		return ingredient.getCookingStyle() === this.cooking_style;
-	}
+        let context = this;
+        this.getProgressBar().show();
+        this.ingredient.on("cook_progress", (progress) => {
+            context.getProgressBar().setProgress(progress);
+        });
 
-	setIngredient(ingredient) {
-		if (ingredient.needsToBeChopped() && !ingredient.isChopped()) return;
-		if (ingredient.isCooked()) return;
-		if (ingredient.needsToBeCooked() === false) return;
+        this.ingredient.on("cook_complete", () => {
+            context.getProgressBar().hide();
+        });
+    }
 
-		this.ingredient = ingredient;
-		ingredient.startCooking();
-	}
+    setCookingStyle(style) {
+        this.cooking_style = style;
+    }
 
-	clearIngredient() {
-		if (this.ingredient === null) return;
+    canCookIngredient(ingredient) {
+        return ingredient.getCookingStyle() === this.cooking_style;
+    }
 
-		this.ingredient.stopCooking();
-		this.ingredient = null;
-	}
+    isIngredientCooked() {
+        if (this.ingredient === null) return false;
 
-	update() {}
+        return this.ingredient.isCooked();
+    }
+
+    setIngredient(ingredient) {
+        if (ingredient.needsToBeChopped() && !ingredient.isChopped()) return false;
+        if (ingredient.isCooked()) return false;
+        if (ingredient.needsToBeCooked() === false) return false;
+
+        this.ingredient = ingredient;
+        this.cook();
+        return true;
+    }
+
+    getCookedIngredient() {
+        if (this.ingredient === null) return null;
+        if (!this.ingredient.isCooked()) return null;
+
+        let ingredient = this.ingredient;
+        this.ingredient = null;
+
+        return ingredient;
+    }
+
+    clearIngredient() {
+        if (this.ingredient === null) return;
+
+        this.ingredient.stopCooking();
+        this.ingredient = null;
+    }
+
+    update() {}
 }

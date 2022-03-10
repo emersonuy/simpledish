@@ -23,6 +23,12 @@ export default class AbstractIngredient extends SceneObject {
         this.COOKING_RATE = 100;
 
         this.frame_index = 0;
+
+        this.events = {};
+    }
+
+    on(event, callback) {
+        this.events[event] = callback;
     }
 
     setCookedAssetString(asset_string) {
@@ -58,11 +64,19 @@ export default class AbstractIngredient extends SceneObject {
 
             context.chopped_percentage += progress;
 
+            if (context.events["chop_progress"] !== undefined) {
+                context.events["chop_progress"](context.chopped_percentage * 100);
+            }
+
             if (context.chopped_percentage >= 1) {
                 context.chopped_percentage = 1;
                 context.frame_index = 1;
                 context.getSceneObject().setFrame(context.frame_index);
                 clearInterval(context.chopping_timer);
+
+                if (context.events["chop_complete"] !== undefined) {
+                    context.events["chop_complete"]();
+                }
             }
         }, context.CHOPPING_RATE);
     }
@@ -77,10 +91,17 @@ export default class AbstractIngredient extends SceneObject {
             let progress = context.COOKING_RATE / context.cooking_time;
 
             context.cooked_percentage += progress;
+            if (context.events["cook_progress"] !== undefined) {
+                context.events["cook_progress"](context.cooked_percentage * 100);
+            }
 
             if (context.cooked_percentage >= 1) {
                 context.cooked_percentage = 1;
                 clearInterval(context.cooking_timer);
+
+                if (context.events["cook_complete"] !== undefined) {
+                    context.events["cook_complete"]();
+                }
             }
         }, context.COOKING_RATE);
     }
