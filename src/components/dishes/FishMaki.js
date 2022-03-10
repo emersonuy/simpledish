@@ -4,12 +4,13 @@ import Nori from "../ingredients/Nori";
 import Rice from "../ingredients/Rice";
 import COOKING_STYLE from "../defines/CookingStyles";
 import ASSET_STRING from "../defines/AssetStrings";
+import DISH from "../defines/DishNames";
 
 export default class FishMaki extends Dish {
 	constructor() {
 		super(ASSET_STRING.FISH_MAKI);
 
-		this.setName("Fish Maki");
+		this.setName(DISH.FISH_MAKI);
 
 		let fish = new Fish();
 		let nori = new Nori();

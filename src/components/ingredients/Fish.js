@@ -1,4 +1,5 @@
 import ASSET_STRING from "../defines/AssetStrings";
+import INGREDIENT from "../defines/IngredientNames";
 import AbstractIngredient from "./AbstractIngredient";
 
 export default class Fish extends AbstractIngredient {
@@ -9,6 +10,6 @@ export default class Fish extends AbstractIngredient {
 		this.setChoppedAssetString(ASSET_STRING.CHOPPED_RAW_FISH);
 		this.setCookedAssetString(ASSET_STRING.FRIED_FISH);
 
-		this.setName("Fish");
+		this.setName(INGREDIENT.FISH);
 	}
 }

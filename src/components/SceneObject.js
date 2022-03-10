@@ -1,76 +1,80 @@
 import ScaleHelper from "../helpers/ScaleHelper";
 
 export default class SceneObject {
-    constructor(asset_string) {
-        this.asset_string = asset_string;
-        this.scene_object = null;
-        this.is_highlighted = false;
-    }
+	constructor(asset_string) {
+		this.asset_string = asset_string;
+		this.scene_object = null;
+		this.is_highlighted = false;
+	}
 
-    on(event, callback) {
-        this.scene_object.setInteractive();
+	setAssetString(asset_string) {
+		this.asset_string = asset_string;
+	}
 
-        let context = this;
-        this.scene_object.on(event, (e) => {
-            callback(context);
-        });
-    }
+	on(event, callback) {
+		this.scene_object.setInteractive();
 
-    addToScene(scene, x, y) {
-        this.safeDelete();
+		let context = this;
+		this.scene_object.on(event, (e) => {
+			callback(context);
+		});
+	}
 
-        this.scene_object = scene.add.image(x, y, this.asset_string);
-        this.scene_object.setOrigin(0);
-        this.scene_object.setFrame(this.frame_index);
-    }
+	addToScene(scene, x, y) {
+		this.safeDelete();
 
-    safeDelete() {
-        if (this.scene_object !== null) {
-            this.scene_object.destroy();
-        }
+		this.scene_object = scene.add.image(x, y, this.asset_string);
+		this.scene_object.setOrigin(0);
+		this.scene_object.setFrame(this.frame_index);
+	}
 
-        this.scene_object = null;
-    }
+	safeDelete() {
+		if (this.scene_object !== null) {
+			this.scene_object.destroy();
+		}
 
-    getSceneObject() {
-        return this.scene_object;
-    }
+		this.scene_object = null;
+	}
 
-    getPosition() {
-        return { x: this.scene_object.x, y: this.scene_object.y };
-    }
+	getSceneObject() {
+		return this.scene_object;
+	}
 
-    getDimension() {
-        return {
-            w: this.scene_object.width * this.scene_object.scaleX,
-            h: this.scene_object.height * this.scene_object.scaleY,
-        };
-    }
+	getPosition() {
+		return { x: this.scene_object.x, y: this.scene_object.y };
+	}
 
-    setPosition(x, y) {
-        this.scene_object.setPosition(x, y);
-    }
+	getDimension() {
+		return {
+			w: this.scene_object.width * this.scene_object.scaleX,
+			h: this.scene_object.height * this.scene_object.scaleY,
+		};
+	}
 
-    setHighlighted() {
-        this.is_highlighted = true;
-    }
+	setPosition(x, y) {
+		this.scene_object.setPosition(x, y);
+	}
 
-    isHighlighted() {
-        return this.is_highlighted;
-    }
+	setHighlighted() {
+		this.is_highlighted = true;
+	}
 
-    renderOnTop(scene, object, scale) {
-        let x = this.scene_object.x;
-        let y = this.scene_object.y;
-        let dimension = this.getDimension();
-        let scaled_dimension = { w: dimension.w * scale, h: dimension.h * scale };
+	isHighlighted() {
+		return this.is_highlighted;
+	}
 
-        object.addToScene(scene, x, y);
-        ScaleHelper.scaleObj(object.getSceneObject(), scaled_dimension.w, scaled_dimension.h);
+	renderOnTop(scene, object, scale) {
+		let x = this.scene_object.x;
+		let y = this.scene_object.y;
+		let dimension = this.getDimension();
+		let scaled_dimension = { w: dimension.w * scale, h: dimension.h * scale };
 
-        object.setPosition(
-            x + (dimension.w / 2 - scaled_dimension.w / 2),
-            y + (dimension.h / 2 - scaled_dimension.h / 2)
-        );
-    }
+		object.addToScene(scene, x, y);
+		ScaleHelper.scaleObj(object.getSceneObject(), scaled_dimension.w, scaled_dimension.h);
+
+		object.setPosition(
+			x + (dimension.w / 2 - scaled_dimension.w / 2),
+			y + (dimension.h / 2 - scaled_dimension.h / 2)
+		);
+	}
 }

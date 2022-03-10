@@ -1,4 +1,5 @@
 import SceneObject from "../SceneObject";
+import DishInspector from "./DishInspector";
 
 export default class Dish extends SceneObject {
 	constructor(asset_string) {
@@ -18,6 +19,15 @@ export default class Dish extends SceneObject {
 
 	addIngredient(ingredient) {
 		this.ingredients.push(ingredient);
+	}
+
+	getIngredients() {
+		console.log(this.ingredients);
+		return this.ingredients;
+	}
+
+	dishReady() {
+		return DishInspector.dishReady(this);
 	}
 
 	addToScene(scene) {}
