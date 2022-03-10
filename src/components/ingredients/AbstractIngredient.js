@@ -1,6 +1,13 @@
 import COOKING_STYLE from "../defines/CookingStyles";
 import SceneObject from "../SceneObject";
 
+const INGREDIENT_FRAME = {
+    RAW: 0,
+    CHOPPED: 1,
+    COOKING: 2,
+    COOKED: 3,
+};
+
 export default class AbstractIngredient extends SceneObject {
     constructor(asset_string) {
         super(asset_string);
@@ -22,7 +29,7 @@ export default class AbstractIngredient extends SceneObject {
         this.CHOPPING_RATE = 100;
         this.COOKING_RATE = 100;
 
-        this.frame_index = 0;
+        this.frame_index = INGREDIENT_FRAME.RAW;
 
         this.events = {};
     }
@@ -70,7 +77,7 @@ export default class AbstractIngredient extends SceneObject {
 
             if (context.chopped_percentage >= 1) {
                 context.chopped_percentage = 1;
-                context.frame_index = 1;
+                context.frame_index = INGREDIENT_FRAME.CHOPPED;
                 context.getSceneObject().setFrame(context.frame_index);
                 clearInterval(context.chopping_timer);
 
@@ -86,6 +93,9 @@ export default class AbstractIngredient extends SceneObject {
             return;
         }
 
+        this.frame_index = INGREDIENT_FRAME.COOKING;
+        this.getSceneObject().setFrame(this.frame_index);
+
         let context = this;
         this.cooking_timer = setInterval(function () {
             let progress = context.COOKING_RATE / context.cooking_time;
@@ -98,6 +108,9 @@ export default class AbstractIngredient extends SceneObject {
             if (context.cooked_percentage >= 1) {
                 context.cooked_percentage = 1;
                 clearInterval(context.cooking_timer);
+
+                context.frame_index = INGREDIENT_FRAME.COOKED;
+                context.getSceneObject().setFrame(context.frame_index);
 
                 if (context.events["cook_complete"] !== undefined) {
                     context.events["cook_complete"]();
