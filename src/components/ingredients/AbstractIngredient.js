@@ -8,6 +8,8 @@ const INGREDIENT_FRAME = {
 	COOKED: 3,
 };
 
+const COOKING_STYLE_ASSET_STRINGS = [""];
+
 export default class AbstractIngredient extends WorldObject {
 	constructor(asset_string) {
 		super(asset_string);
@@ -18,7 +20,7 @@ export default class AbstractIngredient extends WorldObject {
 		this.name = "";
 		this.need_to_chop = false;
 		this.need_to_cook = false;
-		this.cooking_style = COOKING_STYLE.BOIL;
+		this.cooking_style = null;
 
 		this.chopped_percentage = 0;
 		this.cooked_percentage = 0;
@@ -140,7 +142,14 @@ export default class AbstractIngredient extends WorldObject {
 	}
 
 	setCookingStyle(cooking_style) {
+		this.setNeedToCook(true);
+
 		this.cooking_style = cooking_style;
+	}
+
+	getCookingStyle() {
+		console.log(this.cooking_style);
+		return this.cooking_style;
 	}
 
 	getName() {
@@ -169,10 +178,6 @@ export default class AbstractIngredient extends WorldObject {
 
 	needsToBeCookedButNotCookedYet() {
 		return this.need_to_cook && this.cooked_percentage < 1;
-	}
-
-	getCookingStyle() {
-		return this.cooking_style;
 	}
 
 	chopped() {

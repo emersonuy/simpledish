@@ -1,8 +1,11 @@
+import ASSET_STRING from "./AssetStrings";
+
 const COOKING_STYLE = {
-	BOIL: 0,
-	STIR_FRY: 0,
-	DEEP_FRY: 0,
-	STEAM: 0,
+	NONE: "",
+	BOIL: ASSET_STRING.BOILING_POT,
+	STIR_FRY: 1,
+	DEEP_FRY: 2,
+	STEAM: 3,
 };
 
 export default COOKING_STYLE;

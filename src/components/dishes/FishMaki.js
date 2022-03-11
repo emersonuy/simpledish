@@ -17,8 +17,6 @@ export default class FishMaki extends Dish {
 		let rice = new Rice();
 
 		fish.setNeedToChop(true);
-		rice.setNeedToCook(true);
-		rice.setCookingStyle(COOKING_STYLE.BOIL);
 
 		this.addIngredient(fish);
 		this.addIngredient(nori);

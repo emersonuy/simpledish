@@ -6,7 +6,7 @@ export default class Cookware extends WorldObject {
 		super(asset_string);
 
 		this.ingredient = null;
-		this.cooking_style = COOKING_STYLE.BOIL;
+		this.cooking_style = null;
 	}
 
 	cook() {
@@ -31,7 +31,7 @@ export default class Cookware extends WorldObject {
 	}
 
 	canCookIngredient(ingredient) {
-		return ingredient.getCookingStyle() === this.cooking_style;
+		return ingredient.getCookingStyle() instanceof this.cooking_style;
 	}
 
 	ingredientCooked() {
@@ -47,6 +47,7 @@ export default class Cookware extends WorldObject {
 	canPutIngredient(ingredient) {
 		if (!this.empty()) return false;
 		if (ingredient.needsToBeChopped() && !ingredient.chopped()) return false;
+		if (!this.canCookIngredient(ingredient)) return false;
 
 		return ingredient.needsToBeCooked();
 	}
