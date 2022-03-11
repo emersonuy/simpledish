@@ -11,7 +11,6 @@ export default class Plate extends WorldObject {
 	}
 
 	addIngredient(ingredient) {
-		console.log(ingredient);
 		this.dish_builder.addIngredient(ingredient);
 	}
 

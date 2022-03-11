@@ -62,9 +62,15 @@ class MyGame extends Phaser.Scene {
 		this.japanese_stage = new JapaneseStage();
 		this.japanese_stage.addToScene(this);
 
+		this.japanese_stage.addOrder();
+		this.japanese_stage.addOrder();
+		this.japanese_stage.addOrder();
+		this.japanese_stage.addOrder();
+		this.japanese_stage.update(this);
+
 		this.highlighter = new WorldObjectHighlighter(ASSET_STRING.HIGHLIGHT);
 		this.highlighter.addToScene(this, 0, 0);
-		this.highlighter.highlight(null);
+		this.highlighter.hide();
 
 		let scene = this;
 		let highlighter = this.highlighter;

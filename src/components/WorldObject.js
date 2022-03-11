@@ -2,7 +2,7 @@ import { Tilemaps } from "phaser";
 import ScaleHelper from "../helpers/ScaleHelper";
 import ProgressBar from "./ui/ProgressBar";
 
-export default class WordlObject {
+export default class WorldObject {
 	constructor(asset_string) {
 		this.asset_string = asset_string;
 		this.game_object = null;

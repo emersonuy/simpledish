@@ -22,13 +22,10 @@ export default class Dish extends WorldObject {
 	}
 
 	getIngredients() {
-		console.log(this.ingredients);
 		return this.ingredients;
 	}
 
 	dishReady() {
 		return DishInspector.dishReady(this);
 	}
-
-	addToScene(scene) {}
 }

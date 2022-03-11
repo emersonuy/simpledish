@@ -7,20 +7,15 @@ export default class DishBuilder {
 
 	addIngredient(ingredient) {
 		this.ingredients.push(ingredient);
-		console.log(this.ingredients);
 	}
 
 	getDish() {
 		let dish = new Dish();
 
-		console.log(this.ingredients);
-
 		this.ingredients.forEach((ingredient) => {
-			console.log(ingredient);
 			dish.addIngredient(ingredient);
 		});
 
-		console.log(dish);
 		return dish;
 	}
 

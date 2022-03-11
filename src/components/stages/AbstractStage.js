@@ -1,10 +1,13 @@
 import Crate from "../Crate";
 import ChoppingBoard from "../utensils/ChoppingBoard";
 import Plate from "../Plate";
+import Order from "../Order";
+import ASSET_STRING from "../defines/AssetStrings";
+import DishFactory from "../dishes/DishFactory";
 
 export default class AbstractStage {
 	constructor() {
-		this.possible_orders = [];
+		this.possible_dishes = [];
 
 		this.cookwares = [{}, {}, {}, {}];
 		this.cookware_positions = [
@@ -40,7 +43,18 @@ export default class AbstractStage {
 			{ x: 810, y: 1350 },
 		];
 
-		this.orders = {};
+		this.orders = [
+			new Order(ASSET_STRING.BG_270X270),
+			new Order(ASSET_STRING.BG_270X270),
+			new Order(ASSET_STRING.BG_270X270),
+			new Order(ASSET_STRING.BG_270X270),
+		];
+		this.order_positions = [
+			{ x: 0, y: 0 },
+			{ x: 270, y: 0 },
+			{ x: 540, y: 0 },
+			{ x: 810, y: 0 },
+		];
 
 		this.stage_time_limit_ms = 0;
 		this.elapsed_time = 0;
@@ -79,7 +93,7 @@ export default class AbstractStage {
 	}
 
 	addDish(dish, time_limit_ms) {
-		this.possible_orders.push({
+		this.possible_dishes.push({
 			id: 0,
 			dish: dish,
 			time_limit_ms: time_limit_ms,
@@ -116,12 +130,22 @@ export default class AbstractStage {
 	}
 
 	addOrder() {
-		let random_index = parseInt((Math.random() * 100) % this.possible_orders.length);
+		let random_index = parseInt((Math.random() * 100) % this.possible_dishes.length);
 
-		let random_order = { ...this.possible_orders[random_index] };
-		random_order.id = this.ORDER_ID++;
+		let random_dish_info = { ...this.possible_dishes[random_index] };
+		let random_dish_name = random_dish_info.dish.getName();
 
-		this.orders[random_order.id] = { ...random_order };
+		random_dish_info.dish = DishFactory.create(random_dish_name);
+
+		for (let i = 0; i < this.orders.length; i++) {
+			let order = this.orders[i];
+
+			if (order.empty()) {
+				random_dish_info.id = this.ORDER_ID++;
+				order.setDish(random_dish_info);
+				break;
+			}
+		}
 	}
 
 	removeOrder(id) {
@@ -132,5 +156,9 @@ export default class AbstractStage {
 		clearInterval(this.stage_timer);
 	}
 
-	update() {}
+	update(scene) {
+		this.orders.forEach((order) => {
+			order.update(scene);
+		});
+	}
 }

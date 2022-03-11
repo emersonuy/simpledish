@@ -1,4 +1,3 @@
-import ScaleHelper from "../helpers/ScaleHelper";
 import ASSET_STRING from "./defines/AssetStrings";
 import IngredientFactory from "./ingredients/IngredientFactory";
 import WorldObject from "./WorldObject";

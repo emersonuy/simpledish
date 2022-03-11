@@ -12,7 +12,7 @@ export default class JapaneseStage extends AbstractStage {
 		super();
 
 		this.addDish(new FishMaki(), TimeHelper.minToMsec(2));
-		this.addDish(new Sashimi(), TimeHelper.minToMsec(2));
+		//		this.addDish(new Sashimi(), TimeHelper.minToMsec(2));
 
 		this.addCookware(new BoilingPot(), 0);
 		this.addCookware(new BoilingPot(), 1);
@@ -65,6 +65,14 @@ export default class JapaneseStage extends AbstractStage {
 		this.plates.forEach((plate, index) => {
 			plate.addToScene(scene);
 			plate.setPosition(context.plate_positions[index].x, context.plate_positions[index].y);
+		});
+
+		this.orders.forEach((order, index) => {
+			order.addToScene(
+				scene,
+				context.order_positions[index].x,
+				context.order_positions[index].y
+			);
 		});
 	}
 }
