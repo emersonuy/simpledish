@@ -1,7 +1,7 @@
-import SceneObject from "../SceneObject";
+import WorldObject from "../WorldObject";
 import DishInspector from "./DishInspector";
 
-export default class Dish extends SceneObject {
+export default class Dish extends WorldObject {
 	constructor(asset_string) {
 		super(asset_string);
 

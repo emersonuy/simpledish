@@ -1,8 +1,8 @@
 import ASSET_STRING from "./defines/AssetStrings";
 import DishBuilder from "./dishes/DishBuilder";
-import SceneObject from "./SceneObject";
+import WorldObject from "./WorldObject";
 
-export default class Plate extends SceneObject {
+export default class Plate extends WorldObject {
 	constructor() {
 		super(ASSET_STRING.PLATE);
 

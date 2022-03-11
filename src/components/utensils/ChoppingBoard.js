@@ -1,73 +1,73 @@
 import ASSET_STRING from "../defines/AssetStrings";
-import SceneObject from "../SceneObject";
+import WorldObject from "../WorldObject";
 import ProgressBar from "../ui/ProgressBar";
 
-export default class ChoppingBoard extends SceneObject {
-    constructor() {
-        super(ASSET_STRING.CHOPPING_BOARD);
+export default class ChoppingBoard extends WorldObject {
+	constructor() {
+		super(ASSET_STRING.CHOPPING_BOARD);
 
-        this.ingredient = null;
-    }
+		this.ingredient = null;
+	}
 
-    chop() {
-        if (this.ingredient === null) return false;
-        if (this.ingredient.isChopped()) return false;
-        if (this.ingredient.needsToBeChopped() === false) return false;
+	chop() {
+		if (this.ingredient === null) return false;
+		if (this.ingredient.isChopped()) return false;
+		if (this.ingredient.needsToBeChopped() === false) return false;
 
-        this.ingredient.startChopping();
-        this.getProgressBar().show();
-        let context = this;
-        this.ingredient.on("chop_progress", (progress) => {
-            let progress_bar = context.getProgressBar();
+		this.ingredient.startChopping();
+		this.getProgressBar().show();
+		let context = this;
+		this.ingredient.on("chop_progress", (progress) => {
+			let progress_bar = context.getProgressBar();
 
-            progress_bar.setProgress(progress);
-        });
+			progress_bar.setProgress(progress);
+		});
 
-        this.ingredient.on("chop_complete", () => {
-            context.getProgressBar().hide();
-        });
+		this.ingredient.on("chop_complete", () => {
+			context.getProgressBar().hide();
+		});
 
-        return true;
-    }
+		return true;
+	}
 
-    empty() {
-        return this.ingredient === null;
-    }
+	empty() {
+		return this.ingredient === null;
+	}
 
-    setIngredient(ingredient) {
-        if (!this.empty()) return false;
-        if (ingredient.needsToBeChopped() === false) return false;
+	setIngredient(ingredient) {
+		if (!this.empty()) return false;
+		if (ingredient.needsToBeChopped() === false) return false;
 
-        this.ingredient = ingredient;
+		this.ingredient = ingredient;
 
-        return true;
-    }
+		return true;
+	}
 
-    ingredientChopped() {
-        if (this.ingredient === null) return false;
+	ingredientChopped() {
+		if (this.ingredient === null) return false;
 
-        return this.ingredient.isChopped();
-    }
+		return this.ingredient.isChopped();
+	}
 
-    getChoppedIngredient() {
-        if (this.empty()) return null;
-        if (!this.ingredient.isChopped()) return null;
+	getChoppedIngredient() {
+		if (this.empty()) return null;
+		if (!this.ingredient.isChopped()) return null;
 
-        let ingredient = this.ingredient;
+		let ingredient = this.ingredient;
 
-        this.ingredient = null;
+		this.ingredient = null;
 
-        return ingredient;
-    }
+		return ingredient;
+	}
 
-    clearIngredient() {
-        if (this.ingredient === null) return null;
+	clearIngredient() {
+		if (this.ingredient === null) return null;
 
-        let ingredient = this.ingredient;
-        this.ingredient = null;
+		let ingredient = this.ingredient;
+		this.ingredient = null;
 
-        return ingredient;
-    }
+		return ingredient;
+	}
 
-    validate() {}
+	validate() {}
 }

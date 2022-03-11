@@ -1,12 +1,12 @@
 const ScaleHelper = {
-	scaleObj: (object, scaled_width, scaled_height) => {
-		let scale = { x: scaled_width / object.width, y: scaled_height / object.height };
+	scaleGameObject: (game_object, scaled_width, scaled_height) => {
+		let scale = { x: scaled_width / game_object.width, y: scaled_height / game_object.height };
 
-		if (scale.x === 1 && scale.y === 1) return object;
+		if (scale.x === 1 && scale.y === 1) return game_object;
 
-		object.setScale(scale.x, scale.y);
+		game_object.setScale(scale.x, scale.y);
 
-		return object;
+		return game_object;
 	},
 };
 
