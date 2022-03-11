@@ -151,8 +151,24 @@ export default class AbstractIngredient extends WorldObject {
 		return this.need_to_chop;
 	}
 
+	needsToBeChoppedAndAlreadyChopped() {
+		return this.need_to_chop && this.chopped_percentage === 1;
+	}
+
+	needsToBeChoppedButNotChoppedYet() {
+		return this.need_to_chop && this.chopped_percentage < 1;
+	}
+
 	needsToBeCooked() {
 		return this.need_to_cook;
+	}
+
+	needsToBeCookedAndAlreadyCooked() {
+		return this.need_to_cook && this.cooked_percentage === 1;
+	}
+
+	needsToBeCookedButNotCookedYet() {
+		return this.need_to_cook && this.cooked_percentage < 1;
 	}
 
 	getCookingStyle() {

@@ -18,14 +18,15 @@ import highlight_img from "./assets/highlight.png";
 
 import ASSET_STRING from "./components/defines/AssetStrings";
 import JapaneseStage from "./components/stages/JapaneseStage";
-import ScaleHelper from "./helpers/ScaleHelper";
 import AbstractIngredient from "./components/ingredients/AbstractIngredient";
 import WorldObjectHighlighter from "./components/WorldObjectHighlighter";
-import ProgressBar from "./components/ui/ProgressBar";
+import Hand from "./components/Hand";
 
 class MyGame extends Phaser.Scene {
 	constructor() {
 		super();
+
+		this.hand = new Hand();
 	}
 
 	preload() {
@@ -57,62 +58,48 @@ class MyGame extends Phaser.Scene {
 		});
 	}
 
-	handEmpty() {
-		return this.hand === null;
-	}
-
-	pickWorldObject(scene_object) {
-		this.hand = scene_object;
-	}
-
-	dropWorldObject() {
-		if (!this.handEmpty()) {
-			this.hand = null;
-		}
-	}
-
 	create() {
 		this.japanese_stage = new JapaneseStage();
 		this.japanese_stage.addToScene(this);
-		this.hand = null;
 
 		this.highlighter = new WorldObjectHighlighter(ASSET_STRING.HIGHLIGHT);
 		this.highlighter.addToScene(this, 0, 0);
 		this.highlighter.highlight(null);
 
-		let context = this;
+		let scene = this;
 		let highlighter = this.highlighter;
+		let hand = this.hand;
 		this.japanese_stage.onCrateClick((crate) => {
-			if (context.handEmpty()) {
+			if (hand.empty()) {
 				let ingredient = crate.getIngredient();
-				crate.addOnTop(context, ingredient, 0.8);
+				crate.addOnTop(scene, ingredient, 0.8);
 				crate.highlight(highlighter);
-				context.pickWorldObject(ingredient);
+				hand.pick(ingredient);
 			} else {
 				if (crate.highlighted()) {
 					crate.removeHighlight();
-					context.hand.safeDelete();
-					context.hand = null;
+					hand.drop().safeDelete();
 				}
 			}
 		});
 
 		this.japanese_stage.onChoppingBoardClick((chopping_board) => {
-			if (!context.handEmpty()) {
-				if (context.hand instanceof AbstractIngredient) {
-					if (!chopping_board.canPutIngredient(context.hand)) return;
+			if (!hand.empty()) {
+				if (hand.getWorldObject() instanceof AbstractIngredient) {
+					let ingredient = hand.getWorldObject();
+					if (!chopping_board.canPutIngredient(ingredient)) return;
 
-					chopping_board.putIngredient(context.hand);
-					chopping_board.addOnTop(context, context.hand, 0.8);
+					chopping_board.putIngredient(ingredient);
+					chopping_board.addOnTop(scene, ingredient, 0.8);
 					chopping_board.highlight(highlighter);
-					context.dropWorldObject();
 					chopping_board.removeHighlight();
+					hand.drop();
 				}
 			} else {
 				if (!chopping_board.empty()) {
 					if (chopping_board.ingredientChopped()) {
 						chopping_board.highlight(highlighter);
-						context.pickWorldObject(chopping_board.removeIngredient());
+						hand.pick(chopping_board.removeIngredient());
 					} else {
 						chopping_board.chop();
 					}
@@ -121,16 +108,18 @@ class MyGame extends Phaser.Scene {
 		});
 
 		this.japanese_stage.onPlateClick((plate) => {
-			if (!context.handEmpty()) {
-				if (context.hand instanceof AbstractIngredient) {
-					if (context.hand.needsToBeChopped() && !context.hand.chopped()) return;
-					if (context.hand.needsToBeCooked() && !context.hand.cooked()) return;
+			if (!hand.empty()) {
+				if (hand.holdingIngredient()) {
+					let ingredient = hand.getWorldObject();
+
+					if (ingredient.needsToBeChoppedButNotChoppedYet()) return;
+					if (ingredient.needsToBeCookedButNotCookedYet()) return;
 
 					plate.highlight(highlighter);
-					plate.addIngredient(context.hand);
-					plate.addOnTop(context, context.hand, 0.8);
+					plate.addIngredient(ingredient);
+					plate.addOnTop(scene, ingredient, 0.8);
 
-					context.dropWorldObject();
+					hand.drop();
 					plate.removeHighlight();
 				}
 			} else {
@@ -139,21 +128,23 @@ class MyGame extends Phaser.Scene {
 		});
 
 		this.japanese_stage.onCookwareClick((cookware) => {
-			if (!context.handEmpty()) {
-				if (context.hand instanceof AbstractIngredient) {
-					if (!cookware.canPutIngredient(context.hand)) return;
+			if (!hand.empty()) {
+				if (hand.holdingIngredient()) {
+					let ingredient = hand.getWorldObject();
+
+					if (!cookware.canPutIngredient(ingredient)) return;
 
 					cookware.highlight(highlighter);
-					cookware.putIngredient(context.hand);
-					cookware.addOnTop(context, context.hand, 0.8);
+					cookware.putIngredient(ingredient);
+					cookware.addOnTop(scene, ingredient, 0.8);
 					cookware.removeHighlight(highlighter);
-					context.dropWorldObject();
+					hand.drop();
 					cookware.cook();
 				}
 			} else {
 				if (cookware.ingredientCooked()) {
 					cookware.highlight(highlighter);
-					context.pickWorldObject(cookware.removeIngredient());
+					hand.pick(cookware.removeIngredient());
 				}
 			}
 		});
