@@ -10,5 +10,7 @@ export default class Rice extends AbstractIngredient {
 		this.setNeedToCook(true);
 
 		this.setName(INGREDIENT.RICE);
+
+		this.depth = 4;
 	}
 }

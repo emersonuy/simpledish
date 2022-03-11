@@ -10,6 +10,9 @@ export default class Cookware extends WorldObject {
 	}
 
 	cook() {
+		if (this.empty()) return;
+		if (this.ingredient.cooked()) return;
+
 		this.ingredient.startCooking();
 
 		let context = this;
@@ -31,37 +34,33 @@ export default class Cookware extends WorldObject {
 		return ingredient.getCookingStyle() === this.cooking_style;
 	}
 
-	isIngredientCooked() {
+	ingredientCooked() {
 		if (this.ingredient === null) return false;
 
-		return this.ingredient.isCooked();
+		return this.ingredient.cooked();
 	}
 
-	setIngredient(ingredient) {
-		if (ingredient.needsToBeChopped() && !ingredient.isChopped()) return false;
-		if (ingredient.isCooked()) return false;
-		if (ingredient.needsToBeCooked() === false) return false;
+	empty() {
+		return this.ingredient === null;
+	}
 
+	canPutIngredient(ingredient) {
+		if (!this.empty()) return false;
+		if (ingredient.needsToBeChopped() && !ingredient.chopped()) return false;
+
+		return ingredient.needsToBeCooked();
+	}
+
+	putIngredient(ingredient) {
 		this.ingredient = ingredient;
-		this.cook();
-		return true;
 	}
 
-	getCookedIngredient() {
-		if (this.ingredient === null) return null;
-		if (!this.ingredient.isCooked()) return null;
-
+	removeIngredient() {
 		let ingredient = this.ingredient;
 		this.ingredient = null;
+		ingredient.stopCooking();
 
 		return ingredient;
-	}
-
-	clearIngredient() {
-		if (this.ingredient === null) return;
-
-		this.ingredient.stopCooking();
-		this.ingredient = null;
 	}
 
 	update() {}

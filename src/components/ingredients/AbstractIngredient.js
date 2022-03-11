@@ -79,13 +79,17 @@ export default class AbstractIngredient extends WorldObject {
 				context.chopped_percentage = 1;
 				context.frame_index = INGREDIENT_FRAME.CHOPPED;
 				context.getGameObject().setFrame(context.frame_index);
-				clearInterval(context.chopping_timer);
+				context.stopChopping();
 
 				if (context.events["chop_complete"] !== undefined) {
 					context.events["chop_complete"]();
 				}
 			}
 		}, context.CHOPPING_RATE);
+	}
+
+	stopChopping() {
+		clearInterval(this.chopping_timer);
 	}
 
 	startCooking() {
@@ -107,7 +111,7 @@ export default class AbstractIngredient extends WorldObject {
 
 			if (context.cooked_percentage >= 1) {
 				context.cooked_percentage = 1;
-				clearInterval(context.cooking_timer);
+				context.stopCooking();
 
 				context.frame_index = INGREDIENT_FRAME.COOKED;
 				context.getGameObject().setFrame(context.frame_index);
@@ -117,6 +121,10 @@ export default class AbstractIngredient extends WorldObject {
 				}
 			}
 		}, context.COOKING_RATE);
+	}
+
+	stopCooking() {
+		clearInterval(this.cooking_timer);
 	}
 
 	setName(name) {
@@ -151,11 +159,11 @@ export default class AbstractIngredient extends WorldObject {
 		return this.cooking_style;
 	}
 
-	isChopped() {
-		return this.need_to_chop ? this.chopped_percentage === 1 : true;
+	chopped() {
+		return this.need_to_chop ? this.chopped_percentage === 1 : false;
 	}
 
-	isCooked() {
-		return this.need_to_cook ? this.cooked_percentage === 1 : true;
+	cooked() {
+		return this.need_to_cook ? this.cooked_percentage === 1 : false;
 	}
 }

@@ -8,6 +8,7 @@ export default class WordlObject {
 		this.game_object = null;
 		this.highlighter = null;
 		this.alpha = 1;
+		this.depth = 0;
 	}
 
 	setAssetString(asset_string) {
@@ -40,6 +41,7 @@ export default class WordlObject {
 		this.game_object.setOrigin(0);
 		this.game_object.setFrame(this.frame_index);
 		this.game_object.setAlpha(alpha);
+		this.game_object.setDepth(this.depth);
 
 		this.alpha = alpha;
 	}
@@ -99,12 +101,12 @@ export default class WordlObject {
 		this.highlighter.show();
 	}
 
-	isHighlighted() {
-		return this.is_highlighted === null;
+	highlighted() {
+		return this.highlighter !== null;
 	}
 
 	removeHighlight() {
-		if (!this.isHighlighted) return;
+		if (!this.highlighted()) return;
 
 		this.highlighter.hide();
 		this.highlighter = null;

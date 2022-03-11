@@ -10,8 +10,8 @@ export default class ChoppingBoard extends WorldObject {
 	}
 
 	chop() {
-		if (this.ingredient === null) return false;
-		if (this.ingredient.isChopped()) return false;
+		if (this.empty()) return false;
+		if (this.ingredient.chopped()) return false;
 		if (this.ingredient.needsToBeChopped() === false) return false;
 
 		this.ingredient.startChopping();
@@ -34,39 +34,29 @@ export default class ChoppingBoard extends WorldObject {
 		return this.ingredient === null;
 	}
 
-	setIngredient(ingredient) {
+	canPutIngredient(ingredient) {
 		if (!this.empty()) return false;
-		if (ingredient.needsToBeChopped() === false) return false;
+		if (ingredient.cooked()) return false;
 
+		return ingredient.needsToBeChopped();
+	}
+
+	putIngredient(ingredient) {
 		this.ingredient = ingredient;
+	}
 
-		return true;
+	removeIngredient() {
+		let ingredient = this.ingredient;
+		this.ingredient = null;
+		ingredient.stopChopping();
+
+		return ingredient;
 	}
 
 	ingredientChopped() {
 		if (this.ingredient === null) return false;
 
-		return this.ingredient.isChopped();
-	}
-
-	getChoppedIngredient() {
-		if (this.empty()) return null;
-		if (!this.ingredient.isChopped()) return null;
-
-		let ingredient = this.ingredient;
-
-		this.ingredient = null;
-
-		return ingredient;
-	}
-
-	clearIngredient() {
-		if (this.ingredient === null) return null;
-
-		let ingredient = this.ingredient;
-		this.ingredient = null;
-
-		return ingredient;
+		return this.ingredient.chopped();
 	}
 
 	validate() {}

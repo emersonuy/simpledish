@@ -11,5 +11,7 @@ export default class Fish extends AbstractIngredient {
 		this.setCookedAssetString(ASSET_STRING.FRIED_FISH);
 
 		this.setName(INGREDIENT.FISH);
+
+		this.depth = 5;
 	}
 }
