@@ -1,14 +1,23 @@
-import { Tilemaps } from "phaser";
 import ScaleHelper from "../helpers/ScaleHelper";
 import ProgressBar from "./ui/ProgressBar";
 
 export default class WorldObject {
-	constructor(asset_string) {
+	constructor(scene, asset_string) {
+		this.scene = scene;
 		this.asset_string = asset_string;
 		this.game_object = null;
-		this.highlighter = null;
 		this.alpha = 1;
 		this.depth = 0;
+		this.highlighter = null;
+
+		this.child_world_objects = [];
+		this.initialize();
+	}
+
+	initialize() {
+		this.game_object = this.scene.add.image(0, 0, this.asset_string);
+		this.game_object.setAlpha(this.alpha);
+		this.game_object.setDepth(this.depth);
 	}
 
 	setAssetString(asset_string) {
@@ -34,18 +43,6 @@ export default class WorldObject {
 		this.game_object.setAlpha(0);
 	}
 
-	addToScene(scene, x, y, alpha) {
-		this.safeDelete();
-
-		this.game_object = scene.add.image(x, y, this.asset_string);
-		this.game_object.setOrigin(0);
-		this.game_object.setFrame(this.frame_index);
-		this.game_object.setAlpha(alpha);
-		this.game_object.setDepth(this.depth);
-
-		this.alpha = alpha;
-	}
-
 	getGameObject() {
 		return this.game_object;
 	}
@@ -63,12 +60,16 @@ export default class WorldObject {
 		return this.progress_bar;
 	}
 
-	safeDelete() {
+	destroy() {
 		if (this.game_object !== null) {
 			this.game_object.destroy();
 		}
 
 		this.game_object = null;
+	}
+
+	setPosition(x, y) {
+		this.game_object.setPosition(x, y);
 	}
 
 	getPosition() {
@@ -86,43 +87,11 @@ export default class WorldObject {
 		};
 	}
 
-	setPosition(x, y) {
-		this.game_object.setPosition(x, y);
+	addWorldObject(world_object) {
+		this.child_world_objects.push(world_object);
 	}
 
-	highlight(highlighter) {
-		this.highlighter = highlighter;
+	alignTo(world_object, alignment) {}
 
-		let position = this.getPosition();
-		let size = this.getSize();
-
-		this.highlighter.setPosition(position.x, position.y);
-		this.highlighter.setSize(size.w, size.h);
-		this.highlighter.show();
-	}
-
-	highlighted() {
-		return this.highlighter !== null;
-	}
-
-	removeHighlight() {
-		if (!this.highlighted()) return;
-
-		this.highlighter.hide();
-		this.highlighter = null;
-	}
-
-	addOnTop(scene, world_object, scale) {
-		let position = this.getPosition();
-		let size = this.getSize();
-		let scaled_size = { w: size.w * scale, h: size.h * scale };
-
-		world_object.addToScene(scene, position.x, position.y);
-		ScaleHelper.scaleGameObject(world_object.getGameObject(), scaled_size.w, scaled_size.h);
-
-		world_object.setPosition(
-			position.x + (size.w / 2 - scaled_size.w / 2),
-			position.y + (size.h / 2 - scaled_size.h / 2)
-		);
-	}
+	adjustSizeSameWith(world_object) {}
 }
