@@ -1,19 +1,11 @@
 import ScaleHelper from "../../helpers/ScaleHelper";
+import UIElement from "./UIElement";
 
-export default class ProgressBar {
+export default class ProgressBar extends UIElement {
 	constructor(scene, x, y, width, height) {
-		this.scene = scene;
+		super(scene, x, y, width, height);
+
 		this.progress = 0;
-
-		let w = width;
-		let h = height === undefined ? width / 5 : height;
-
-		this.bg = scene.add.rectangle(x, y, w, h, 0xff0000, 0.8).setOrigin(0);
-		this.track = scene.add.rectangle(x, y, w, h, 0x00ff00, 0.8).setOrigin(0);
-
-		this.x = x;
-		this.y = y;
-		this.setPosition(x, y);
 	}
 
 	hide() {
