@@ -6,7 +6,7 @@ import steamer_img from "./assets/steamer.jpg";
 import crate_img from "./assets/crate.jpg";
 import chopping_board_img from "./assets/chopping_board.jpg";
 import plate_img from "./assets/plate.jpg";
-import fish_maki_img from "./assets/fish_maki.jpg";
+import fish_maki_img from "./assets/fish_maki.png";
 
 import bg_120x120_img from "./assets/120x120_bg.jpg";
 import bg_270x270_img from "./assets/270x270_bg.jpg";
@@ -17,21 +17,14 @@ import nori_img from "./assets/nori.png";
 import highlight_img from "./assets/highlight.png";
 
 import ASSET_STRING from "./components/defines/AssetStrings";
-import JapaneseStage from "./components/stages/JapaneseStage";
-import AbstractIngredient from "./components/ingredients/AbstractIngredient";
-import WorldObjectHighlighter from "./components/WorldObjectHighlighter";
-import Hand from "./components/Hand";
-import WorldObject from "./components/WorldObject";
-import AlignHelper from "./helpers/AlignHelper";
 import ImageObject from "./components/game_objects/game/ImageObject";
-import ProgressBar from "./components/game_objects/ui/ProgressBar";
+import IngredientFactory from "./components/game_objects/game/factory/IngredientFactory";
 import ScoreText from "./components/game_objects/ui/ScoreText";
+import TimeText from "./components/game_objects/ui/TimeText";
 
 class MyGame extends Phaser.Scene {
 	constructor() {
 		super();
-
-		this.hand = new Hand();
 	}
 
 	preload() {
@@ -47,13 +40,16 @@ class MyGame extends Phaser.Scene {
 		this.load.image(ASSET_STRING.BOIL_COOKING_STYLE, boil_cooking_style_img);
 		this.load.image(ASSET_STRING.HIGHLIGHT, highlight_img);
 
-		this.load.image(ASSET_STRING.FISH_MAKI, fish_maki_img);
-
-		this.load.spritesheet(ASSET_STRING.RAW_FISH, fish_img, {
+		this.load.spritesheet(ASSET_STRING.FISH_MAKI, fish_maki_img, {
 			frameWidth: 270,
 			frameHeight: 270,
 		});
-		this.load.spritesheet(ASSET_STRING.RAW_RICE, rice_img, {
+
+		this.load.spritesheet(ASSET_STRING.FISH, fish_img, {
+			frameWidth: 270,
+			frameHeight: 270,
+		});
+		this.load.spritesheet(ASSET_STRING.RICE, rice_img, {
 			frameWidth: 270,
 			frameHeight: 270,
 		});
@@ -64,11 +60,17 @@ class MyGame extends Phaser.Scene {
 	}
 
 	create() {
-		let fish_maki_obj = new ImageObject(this, ASSET_STRING.FISH_MAKI, 0, 0, 100, 100);
+		let fish_maki_obj = new ImageObject(this, ASSET_STRING.FISH_MAKI, 120, 0, 120, 120);
+		let fish = IngredientFactory.create(this, ASSET_STRING.FISH, 0, 120, 100, 100);
+		let rice = IngredientFactory.create(this, ASSET_STRING.RICE, 130, 120, 100, 100);
+		let nori = IngredientFactory.create(this, ASSET_STRING.NORI, 250, 120, 100, 100);
 
-		let progress_bar = new ProgressBar(this, 100, 100, 150, 50, 0x00ff00, 1);
+		let crate = new ImageObject(this, ASSET_STRING.CRATE, 500, 500, 120, 120);
 
-		let score_text = new ScoreText(this, 500, 500, "Score: 10");
+		// let progress_bar = new ProgressBar(this, 100, 100, 150, 50, 0x00ff00, 1);
+
+		let score_text = new ScoreText(this, 100, 1700, "1000");
+		let time_text = new TimeText(this, 800, 1700, "05:00");
 	}
 
 	update() {}
